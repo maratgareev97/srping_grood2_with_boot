@@ -1,38 +1,39 @@
 package ru.springmavc.crud.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 @Configuration
-@PropertySource("classpath:db.properties")
+@PropertySource(value = {"classpath:db.properties", "classpath:hibernate.properties"})
 @EnableTransactionManagement
 @ComponentScan(value = "ru.springmavc.crud")
 public class DatabaseConfig {
 
-    @Autowired
+    @Resource
     private Environment env;
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan(env.getRequiredProperty("db.entity.package"));
+        em.setPackagesToScan(env.getRequiredProperty("db.models.package"));
 
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         em.setJpaProperties(getHibernateProperties());
@@ -60,7 +61,7 @@ public class DatabaseConfig {
     }
 
     @Bean
-    public PlatformTransactionManager platformTransactionManager(){
+    public PlatformTransactionManager platformTransactionManager() {
         JpaTransactionManager manager = new JpaTransactionManager();
         manager.setEntityManagerFactory(entityManagerFactory().getObject());
         return manager;
@@ -70,11 +71,11 @@ public class DatabaseConfig {
     public Properties getHibernateProperties() {
         try {
             Properties properties = new Properties();
-            InputStream is = getClass().getClassLoader().getResourceAsStream("hibernate.properies");
+            InputStream is = getClass().getClassLoader().getResourceAsStream("/hibernate.properties");
             properties.load(is);
             return properties;
         } catch (IOException e) {
-            throw new IllegalArgumentException("Не могу считать проперти файл",e);
+            throw new IllegalArgumentException("Не могу считать проперти файл", e);
         }
     }
 }

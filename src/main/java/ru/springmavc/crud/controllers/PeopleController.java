@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.springmavc.crud.dao.PersonDAO;
+import ru.springmavc.crud.dao.PersonDAOInterface;
 import ru.springmavc.crud.models.Person;
 
 import javax.validation.Valid;
@@ -17,20 +18,23 @@ public class PeopleController {
 
     private final PersonDAO personDAO;
 
+    private final PersonDAOInterface personDAOInterface;
+
     @Autowired
-    public PeopleController(PersonDAO personDAO) {
+    public PeopleController(PersonDAO personDAO, PersonDAOInterface personDAOInterface) {
         this.personDAO = personDAO;
+        this.personDAOInterface = personDAOInterface;
     }
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("people", personDAO.index());
+        model.addAttribute("people", personDAOInterface.index());
         return "people/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("person", personDAO.show(id));
+        model.addAttribute("person", personDAOInterface.show(id));
         return "people/show";
     }
 
@@ -45,13 +49,13 @@ public class PeopleController {
         if (bindingResult.hasErrors())
             return "people/new";
 
-        personDAO.save(person);
+        personDAOInterface.save(person);
         return "redirect:/people";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("person", personDAO.show(id));
+        model.addAttribute("person", personDAOInterface.show(id));
         return "people/edit";
     }
 
@@ -61,20 +65,13 @@ public class PeopleController {
         if (bindingResult.hasErrors())
             return "people/edit";
 
-        personDAO.update(id, person);
+        personDAOInterface.update(id, person);
         return "redirect:/people";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        personDAO.delete(id);
+        personDAOInterface.delete(id);
         return "redirect:/people";
     }
 }
-
-
-
-
-
-
-
