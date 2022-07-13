@@ -1,43 +1,49 @@
 package ru.springmavc.crud.dao;
 
-import org.hibernate.sql.Select;
+import org.hibernate.Session;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+//import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Transactional;
 import ru.springmavc.crud.models.Person;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+//import javax.transaction.Transactional;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
+//@EnableTransactionManagement
+//@Transactional
 public class PersonDAO implements PersonDAOInterface {
-    private static int PEOPLE_COUNT;
-
-    private static final String URL = "jdbc:postgresql://localhost:5432/first_db";
-    private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "GOGUDAserver123!";
-
-    private static Connection connection;
+//    private static int PEOPLE_COUNT;
+//
+//    private static final String URL = "jdbc:postgresql://localhost:5432/first_db";
+//    private static final String USERNAME = "postgres";
+//    private static final String PASSWORD = "GOGUDAserver123!";
+//
+//    private static Connection connection;
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    static {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
+//    static {
+//        try {
+//            Class.forName("org.postgresql.Driver");
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//
+//        try {
+//            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
+//    }
 
     @Override
     public List<Person> index() {
@@ -116,19 +122,38 @@ public class PersonDAO implements PersonDAOInterface {
         return person;
     }
 
+
     @Override
-    @Transactional()
+    @Transactional
     public void save(Person person) {
 //        person = new Person();
 //        System.out.println(person.getName());
 //        entityManager.persist(person);
 
-
+//        person.setId(person.getId());
         person.setName(person.getName());
         person.setAge(person.getAge());
         person.setEmail(person.getEmail());
-        System.out.println(person.getName());
-        this.entityManager.persist(person);
+
+        System.out.println(person.getId());
+//        EntityTransaction tr = this.entityManager.getTransaction();
+//        System.out.println("?????????!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//        try {
+//            tr.begin();
+//        Session session=entityManager.unwrap(Session.class);
+//        session.update(person);
+
+//        entityManager.merge(person);
+        entityManager.persist(person);
+        entityManager.flush();
+
+
+//            tr.commit();
+//        } catch (Exception e) {
+//            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//            tr.rollback();
+//            throw new RuntimeException(e);
+//        }
 //        entityManager.persist(person);
 
 //        entityManager.createNativeQuery("INSERT INTO person (name, age, email) VALUES (?,?,?)")
@@ -153,35 +178,51 @@ public class PersonDAO implements PersonDAOInterface {
     }
 
     @Override
+    @Transactional
     public void update(int id, Person updatedPerson) {
-        try {
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement("UPDATE Person SET name=?, age=?, email=? WHERE id=?");
+        System.out.println(updatedPerson.getId() + "  !!!!!!!!!!!!!!!!!!!!! " + id);
+        updatedPerson.setName(updatedPerson.getName());
+        updatedPerson.setAge(updatedPerson.getAge());
+        updatedPerson.setEmail(updatedPerson.getEmail());
 
-            preparedStatement.setString(1, updatedPerson.getName());
-            preparedStatement.setInt(2, updatedPerson.getAge());
-            preparedStatement.setString(3, updatedPerson.getEmail());
-            preparedStatement.setInt(4, id);
+        entityManager.merge(updatedPerson);
+        entityManager.flush();
 
-            preparedStatement.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+
+//        try {
+//            PreparedStatement preparedStatement =
+//                    connection.prepareStatement("UPDATE Person SET name=?, age=?, email=? WHERE id=?");
+//
+//            preparedStatement.setString(1, updatedPerson.getName());
+//            preparedStatement.setInt(2, updatedPerson.getAge());
+//            preparedStatement.setString(3, updatedPerson.getEmail());
+//            preparedStatement.setInt(4, id);
+//
+//            preparedStatement.executeUpdate();
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
     }
 
     @Override
+    @Transactional
     public void delete(int id) {
-        PreparedStatement preparedStatement =
-                null;
-        try {
-            preparedStatement = connection.prepareStatement("DELETE FROM Person WHERE id=?");
+        Person person = entityManager.find(Person.class, id);
+//        person = entityManager.find(person., 5);
+        System.out.println(person + " kkkkkkkkkkkk");
+        entityManager.remove(person);
+        entityManager.flush();
 
-            preparedStatement.setInt(1, id);
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+//        PreparedStatement preparedStatement = null;
+//        try {
+//            preparedStatement = connection.prepareStatement("DELETE FROM Person WHERE id=?");
+//
+//            preparedStatement.setInt(1, id);
+//
+//            preparedStatement.executeUpdate();
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
 
     }
 }

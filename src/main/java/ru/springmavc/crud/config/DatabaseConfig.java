@@ -2,6 +2,7 @@ package ru.springmavc.crud.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +23,7 @@ import java.util.Properties;
 
 @Configuration
 @PropertySource(value = {"classpath:db.properties", "classpath:hibernate.properties"})
-@EnableTransactionManagement
+@EnableTransactionManagement(proxyTargetClass = true)
 @ComponentScan(value = "ru.springmavc.crud")
 public class DatabaseConfig {
 
@@ -61,11 +62,10 @@ public class DatabaseConfig {
     }
 
     @Bean
-    public PlatformTransactionManager platformTransactionManager() {
+    public PlatformTransactionManager transactionManager() {
         JpaTransactionManager manager = new JpaTransactionManager();
         manager.setEntityManagerFactory(entityManagerFactory().getObject());
         return manager;
-
     }
 
     public Properties getHibernateProperties() {
@@ -79,3 +79,5 @@ public class DatabaseConfig {
         }
     }
 }
+
+

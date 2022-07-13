@@ -1,9 +1,10 @@
 package ru.springmavc.crud.dao;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.springmavc.crud.models.Person;
 
 import java.util.List;
-
+//@Transactional
 public interface PersonDAOInterface {
     public List<Person> index();
     public Person show(int id);

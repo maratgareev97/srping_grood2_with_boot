@@ -1,8 +1,8 @@
 package ru.springmavc.crud.controllers;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +16,12 @@ import javax.validation.Valid;
 @RequestMapping("/people")
 public class PeopleController {
 
+    @Autowired
     private final PersonDAO personDAO;
 
+    @Autowired
     private final PersonDAOInterface personDAOInterface;
 
-    @Autowired
     public PeopleController(PersonDAO personDAO, PersonDAOInterface personDAOInterface) {
         this.personDAO = personDAO;
         this.personDAOInterface = personDAOInterface;
@@ -43,6 +44,7 @@ public class PeopleController {
         return "people/new";
     }
 
+//    @Transactional
     @PostMapping()
     public String create(@ModelAttribute("person") @Valid Person person,
                          BindingResult bindingResult) {
