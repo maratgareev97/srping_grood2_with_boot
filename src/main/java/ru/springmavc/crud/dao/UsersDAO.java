@@ -1,25 +1,21 @@
 package ru.springmavc.crud.dao;
 
-import org.hibernate.Session;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 //import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Transactional;
-import ru.springmavc.crud.models.Person;
+import ru.springmavc.crud.models.Users;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 //import javax.transaction.Transactional;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 //@EnableTransactionManagement
 //@Transactional
-public class PersonDAO implements PersonDAOInterface {
+public class UsersDAO implements UsersDAOInterface {
 //    private static int PEOPLE_COUNT;
 //
 //    private static final String URL = "jdbc:postgresql://localhost:5432/first_db";
@@ -46,12 +42,12 @@ public class PersonDAO implements PersonDAOInterface {
 //    }
 
     @Override
-    public List<Person> index() {
-        List<Person> people = new ArrayList<>();
+    public List<Users> index() {
+        List<Users> users = new ArrayList<>();
 
         try {
-            TypedQuery<Person> entity = entityManager.createQuery("SELECT u from Person u", Person.class);
-            people = entity.getResultList();
+            TypedQuery<Users> entity = entityManager.createQuery("SELECT u from Users u", Users.class);
+            users = entity.getResultList();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,25 +71,25 @@ public class PersonDAO implements PersonDAOInterface {
 //            throwables.printStackTrace();
 //        }
 
-        return people;
+        return users;
     }
 
     @Override
-    public Person show(int id) {
-        Person person = null;
+    public Users show(int id) {
+        Users users = null;
 
-        List<Person> people = new ArrayList<>();
+        List<Users> people = new ArrayList<>();
 
 
-        TypedQuery<Person> entity = entityManager.createQuery("select p from Person p where p.id = :id", Person.class);
+        TypedQuery<Users> entity = entityManager.createQuery("select p from Users p where p.id = :id", Users.class);
         entity.setParameter("id", id);
         people = entity.getResultList();
         System.out.println(people.get(0).getName());
-        person = new Person();
-        person.setId(people.get(0).getId());
-        person.setName(people.get(0).getName());
-        person.setEmail(people.get(0).getEmail());
-        person.setAge(people.get(0).getAge());
+        users = new Users();
+        users.setId(people.get(0).getId());
+        users.setName(people.get(0).getName());
+        users.setEmail(people.get(0).getEmail());
+        users.setAge(people.get(0).getAge());
 
 //        person = new Person();
 //        person.setName("sd");
@@ -119,23 +115,23 @@ public class PersonDAO implements PersonDAOInterface {
 //            throwables.printStackTrace();
 //        }
 //        System.out.println(person.getId());
-        return person;
+        return users;
     }
 
 
     @Override
     @Transactional
-    public void save(Person person) {
+    public void save(Users users) {
 //        person = new Person();
 //        System.out.println(person.getName());
 //        entityManager.persist(person);
 
 //        person.setId(person.getId());
-        person.setName(person.getName());
-        person.setAge(person.getAge());
-        person.setEmail(person.getEmail());
+        users.setName(users.getName());
+        users.setAge(users.getAge());
+        users.setEmail(users.getEmail());
 
-        System.out.println(person.getId());
+        System.out.println(users.getId());
 //        EntityTransaction tr = this.entityManager.getTransaction();
 //        System.out.println("?????????!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //        try {
@@ -144,7 +140,7 @@ public class PersonDAO implements PersonDAOInterface {
 //        session.update(person);
 
 //        entityManager.merge(person);
-        entityManager.persist(person);
+        entityManager.persist(users);
         entityManager.flush();
 
 
@@ -179,13 +175,13 @@ public class PersonDAO implements PersonDAOInterface {
 
     @Override
     @Transactional
-    public void update(int id, Person updatedPerson) {
-        System.out.println(updatedPerson.getId() + "  !!!!!!!!!!!!!!!!!!!!! " + id);
-        updatedPerson.setName(updatedPerson.getName());
-        updatedPerson.setAge(updatedPerson.getAge());
-        updatedPerson.setEmail(updatedPerson.getEmail());
+    public void update(int id, Users updatedUsers) {
+        System.out.println(updatedUsers.getId() + "  !!!!!!!!!!!!!!!!!!!!! " + id);
+        updatedUsers.setName(updatedUsers.getName());
+        updatedUsers.setAge(updatedUsers.getAge());
+        updatedUsers.setEmail(updatedUsers.getEmail());
 
-        entityManager.merge(updatedPerson);
+        entityManager.merge(updatedUsers);
         entityManager.flush();
 
 
@@ -207,10 +203,10 @@ public class PersonDAO implements PersonDAOInterface {
     @Override
     @Transactional
     public void delete(int id) {
-        Person person = entityManager.find(Person.class, id);
+        Users users = entityManager.find(Users.class, id);
 //        person = entityManager.find(person., 5);
-        System.out.println(person + " kkkkkkkkkkkk");
-        entityManager.remove(person);
+        System.out.println(users + " kkkkkkkkkkkk");
+        entityManager.remove(users);
         entityManager.flush();
 
 //        PreparedStatement preparedStatement = null;

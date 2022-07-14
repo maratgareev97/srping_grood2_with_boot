@@ -1,6 +1,5 @@
 package ru.springmavc.crud.models;
 
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
@@ -8,8 +7,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "person")
-public class Person {
+@Table(name = "users")
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -27,11 +26,11 @@ public class Person {
     @Email(message = "Email should be valid")
     private String email;
 
-    public Person() {
+    public Users() {
 
     }
 
-    public Person(int id, String name, int age, String email) {
+    public Users(int id, String name, int age, String email) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -72,7 +71,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" +
+        return "Users{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +

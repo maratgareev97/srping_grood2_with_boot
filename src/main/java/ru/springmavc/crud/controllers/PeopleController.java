@@ -6,9 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.springmavc.crud.dao.PersonDAO;
-import ru.springmavc.crud.dao.PersonDAOInterface;
-import ru.springmavc.crud.models.Person;
+
+import ru.springmavc.crud.dao.UsersDAO;
+import ru.springmavc.crud.dao.UsersDAOInterface;
+import ru.springmavc.crud.models.Users;
 
 import javax.validation.Valid;
 
@@ -17,63 +18,63 @@ import javax.validation.Valid;
 public class PeopleController {
 
     @Autowired
-    private final PersonDAO personDAO;
+    private final UsersDAO usersDAO;
 
     @Autowired
-    private final PersonDAOInterface personDAOInterface;
+    private final UsersDAOInterface usersDAOInterface;
 
-    public PeopleController(PersonDAO personDAO, PersonDAOInterface personDAOInterface) {
-        this.personDAO = personDAO;
-        this.personDAOInterface = personDAOInterface;
+    public PeopleController(UsersDAO usersDAO, UsersDAOInterface usersDAOInterface) {
+        this.usersDAO = usersDAO;
+        this.usersDAOInterface = usersDAOInterface;
     }
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("people", personDAOInterface.index());
+        model.addAttribute("people", usersDAOInterface.index());
         return "people/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("person", personDAOInterface.show(id));
+        model.addAttribute("users", usersDAOInterface.show(id));
         return "people/show";
     }
 
     @GetMapping("/new")
-    public String newPerson(@ModelAttribute("person") Person person) {
+    public String newUsers(@ModelAttribute("users") Users users) {
         return "people/new";
     }
 
 //    @Transactional
     @PostMapping()
-    public String create(@ModelAttribute("person") @Valid Person person,
+    public String create(@ModelAttribute("users") @Valid Users users,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "people/new";
 
-        personDAOInterface.save(person);
+        usersDAOInterface.save(users);
         return "redirect:/people";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("person", personDAOInterface.show(id));
+        model.addAttribute("users", usersDAOInterface.show(id));
         return "people/edit";
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
+    public String update(@ModelAttribute("users") @Valid Users users, BindingResult bindingResult,
                          @PathVariable("id") int id) {
         if (bindingResult.hasErrors())
             return "people/edit";
 
-        personDAOInterface.update(id, person);
+        usersDAOInterface.update(id, users);
         return "redirect:/people";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        personDAOInterface.delete(id);
+        usersDAOInterface.delete(id);
         return "redirect:/people";
     }
 }
