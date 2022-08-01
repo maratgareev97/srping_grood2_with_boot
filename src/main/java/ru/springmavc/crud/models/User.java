@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
-public class Users {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -26,11 +26,11 @@ public class Users {
     @Email(message = "Email should be valid")
     private String email;
 
-    public Users() {
+    public User() {
 
     }
 
-    public Users(int id, String name, int age, String email) {
+    public User(int id, String name, int age, String email) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -71,7 +71,7 @@ public class Users {
 
     @Override
     public String toString() {
-        return "Users{" +
+        return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +

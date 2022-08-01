@@ -2,11 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Update users</title>
+    <title>Update user</title>
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/people/{id}(id=${users.getId()})}" th:object="${users}">
+<form th:method="PATCH" th:action="@{/user/{id}(id=${user.getId()})}" th:object="${user}">
+    <!--<form th:method="PATCH" th:action="@{/user/edit?id={id}(id=${user.getId()})}" th:object="${user}">-->
+
     <label for="name">Enter name: </label>
     <input type="text" th:field="*{name}" id="name"/>
     <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
@@ -21,6 +23,7 @@
     <br/>
     <input type="submit" value="Update!"/>
 </form>
-
+<a th:href="@{/user/edit?id={id}(id=${user.getId()})}">TEST</a>
+вававававава
 </body>
 </html>
