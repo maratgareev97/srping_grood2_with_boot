@@ -2,7 +2,6 @@ package ru.springmavc.crud.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.springmavc.crud.dao.UserDAO;
 import ru.springmavc.crud.dao.UserDAOInterface;
 import ru.springmavc.crud.models.User;
 
@@ -20,23 +19,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User show(int id) {
-        return userDAOInterface.show(id);
+    public User getUserById(int id) {
+        return userDAOInterface.getUserById(id);
     }
 
     @Override
-    public void save(User user) {
-        userDAOInterface.save(user);
+    public void saveUser(User user) {
+        userDAOInterface.saveUser(user);
     }
 
     @Override
-    public void update(int id, User updatedUser) {
-        userDAOInterface.update(id, updatedUser);
+    public void updateUser(int id, User updatedUser) {
+        userDAOInterface.updateUser(id, updatedUser);
     }
 
     @Override
-    public void delete(int id) {
-        userDAOInterface.delete(id);
+    public void deleteUser(int id) {
+        userDAOInterface.deleteUser(id);
     }
 
     @Override

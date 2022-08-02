@@ -18,19 +18,20 @@ import javax.validation.Valid;
 public class UserController {
 
     @Autowired
-    private final UserDAO userDAO;
+    private UserDAO userDAO;
 
     @Autowired
-    private final UserDAOInterface userDAOInterface;
+    private UserDAOInterface userDAOInterface;
 
     @Autowired
-    private final UserServiceImpl userService;
+    private UserServiceImpl userService;
 
-    public UserController(UserDAO userDAO, UserDAOInterface userDAOInterface, UserServiceImpl userService) {
-        this.userDAO = userDAO;
-        this.userDAOInterface = userDAOInterface;
-        this.userService = userService;
-    }
+// Необходимо без спринга
+//    public UserController(UserDAO userDAO, UserDAOInterface userDAOInterface, UserServiceImpl userService) {
+//        this.userDAO = userDAO;
+//        this.userDAOInterface = userDAOInterface;
+//        this.userService = userService;
+//    }
 
     @GetMapping()
     public String index(Model model) {
@@ -39,8 +40,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.show(id));
+    public String getUserById(@PathVariable("id") int id, Model model) {
+        model.addAttribute("user", userService.getUserById(id));
         return "user/show";
     }
 
@@ -56,7 +57,7 @@ public class UserController {
         if (bindingResult.hasErrors())
             return "user/new";
 
-        userService.save(user);
+        userService.saveUser(user);
         return "redirect:/user";
     }
 
@@ -65,23 +66,23 @@ public class UserController {
     //public String edit(Model model, @PathVariable("id") int id) {
     public String edit(Model model, @RequestParam("id") String id) {
         System.out.println("edit: " + id);
-        model.addAttribute("user", userService.show(Integer.parseInt(id)));
+        model.addAttribute("user", userService.getUserById(Integer.parseInt(id)));
         System.out.println("Good   " + Integer.parseInt(id));
         return "user/edit";
     }
 
     @PatchMapping("/{id}")
 //    @PatchMapping("edit?id={id}")
-    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
+    public String updateUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
                          @PathVariable("id") int id) {
 //    @GetMapping("/")
-//    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
+//    public String updateUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
 //                         @RequestParam("id") int id) {
         if (bindingResult.hasErrors())
             return "user/edit";
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
 
-        userService.update(id, user);
+        userService.updateUser(id, user);
         return "redirect:/user";
     }
 
@@ -91,7 +92,7 @@ public class UserController {
         //@ResponseBody
 //    @DeleteMapping("/delete")
 //    public String delete(@RequestParam("id") String id) {
-        userService.delete(id);
+        userService.deleteUser(id);
         return "redirect:/user";
     }
 

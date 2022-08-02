@@ -34,7 +34,7 @@ public class UserDAO implements UserDAOInterface {
     }
 
     @Override
-    public User show(int id) {
+    public User getUserById(int id) {
         User user = null;
 
         List<User> userList = new ArrayList<>();
@@ -50,14 +50,13 @@ public class UserDAO implements UserDAOInterface {
         user.setEmail(userList.get(0).getEmail());
         user.setAge(userList.get(0).getAge());
 
-
         return user;
     }
 
 
     @Override
     @Transactional
-    public void save(User user) {
+    public void saveUser(User user) {
 
         user.setName(user.getName());
         user.setAge(user.getAge());
@@ -71,7 +70,7 @@ public class UserDAO implements UserDAOInterface {
 
     @Override
     @Transactional
-    public void update(int id, User updatedUser) {
+    public void updateUser(int id, User updatedUser) {
         System.out.println(updatedUser.getId() + "  !!!!!!!!!!!!!!!!!!!!! " + id);
         updatedUser.setName(updatedUser.getName());
         updatedUser.setAge(updatedUser.getAge());
@@ -83,7 +82,7 @@ public class UserDAO implements UserDAOInterface {
 
     @Override
     @Transactional
-    public void delete(int id) {
+    public void deleteUser(int id) {
         User user = entityManager.find(User.class, id);
         System.out.println(user + " kkkkkkkkkkkk");
         entityManager.remove(user);
