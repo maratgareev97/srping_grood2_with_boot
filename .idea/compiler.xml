@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="srping_grood2" />
+        <module name="srping_grood2_with_boot" />
       </profile>
     </annotationProcessing>
   </component>

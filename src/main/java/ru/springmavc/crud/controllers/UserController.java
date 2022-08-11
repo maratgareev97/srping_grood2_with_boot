@@ -86,12 +86,14 @@ public class UserController {
         return "redirect:/user";
     }
 
-    @DeleteMapping("/{id}")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+//    @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
 //    @PostMapping("/{id}")
         //@ResponseBody
 //    @DeleteMapping("/delete")
 //    public String delete(@RequestParam("id") String id) {
+        System.out.println("DELETE");
         userService.deleteUser(id);
         return "redirect:/user";
     }

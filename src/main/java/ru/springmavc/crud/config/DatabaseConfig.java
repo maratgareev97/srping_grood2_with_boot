@@ -29,17 +29,17 @@ public class DatabaseConfig {
     @Resource
     private Environment env;
 
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource());
-        em.setPackagesToScan(env.getRequiredProperty("db.models.package"));
-
-        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        em.setJpaProperties(getHibernateProperties());
-
-        return em;
-    }
+//    @Bean
+//    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+//        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+//        em.setDataSource(dataSource());
+//        em.setPackagesToScan(env.getRequiredProperty("db.models.package"));
+//
+//        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+//        em.setJpaProperties(getHibernateProperties());
+//
+//        return em;
+//    }
 
     @Bean
     public DataSource dataSource() {
@@ -60,23 +60,23 @@ public class DatabaseConfig {
         return ds;
     }
 
-    @Bean
-    public PlatformTransactionManager transactionManager() {
-        JpaTransactionManager manager = new JpaTransactionManager();
-        manager.setEntityManagerFactory(entityManagerFactory().getObject());
-        return manager;
-    }
+//    @Bean
+//    public PlatformTransactionManager transactionManager() {
+//        JpaTransactionManager manager = new JpaTransactionManager();
+//        manager.setEntityManagerFactory(entityManagerFactory().getObject());
+//        return manager;
+//    }
 
-    public Properties getHibernateProperties() {
-        try {
-            Properties properties = new Properties();
-            InputStream is = getClass().getClassLoader().getResourceAsStream("/hibernate.properties");
-            properties.load(is);
-            return properties;
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Не могу считать проперти файл", e);
-        }
-    }
+//    public Properties getHibernateProperties() {
+//        try {
+//            Properties properties = new Properties();
+//            InputStream is = getClass().getClassLoader().getResourceAsStream("/hibernate.properties");
+//            properties.load(is);
+//            return properties;
+//        } catch (IOException e) {
+//            throw new IllegalArgumentException("Не могу считать проперти файл", e);
+//        }
+//    }
 }
 
 
