@@ -5,11 +5,12 @@ import ru.springmavc.crud.models.User;
 import java.util.List;
 
 public interface UserService {
-    public List<User> index();
-    public User getUserById(int id);
-    public void saveUser(User user);
-    public void updateUser(int id, User updatedUser);
-    public void deleteUser(int id);
-
-    public void test();
+    List<User> getAllUsers ();
+    User getUserById(long id);
+    void addUser(User user);
+    void removeUser(long id);
+    void updateUser(User user);
+    User getUserByLogin(String username);
+    void addDefaultUser();
+    User passwordCoder(User user);
 }

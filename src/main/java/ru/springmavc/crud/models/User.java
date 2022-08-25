@@ -1,15 +1,20 @@
 package ru.springmavc.crud.models;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.Collection;
+import java.util.Set;
 
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -27,15 +32,34 @@ public class User {
     @Email(message = "Email should be valid")
     private String email;
 
+    //--------------------------------------------------------------
+    @NotEmpty(message = "Username cannot be empty")
+    @Size(min = 2, max = 15, message = "Name should be between 2 and 15 latin characters")
+    @Column(unique = true)
+    private String username;
+
+    @NotEmpty(message = "Password cannot be empty")
+    @Size(min = 4, message = "Password should be greater then 4 symbols")
+    private String password;
+
+    @ManyToMany
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "roleId"))
+    private Set<Role> roles;
+//---------------------------------------------------------------------------------------
     public User() {
 
     }
 
-    public User(int id, String name, int age, String email) {
+    public User(int id, String name, int age, String email, String username, String password, Set<Role> roles) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.email = email;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
     }
 
     public int getId() {
@@ -79,4 +103,57 @@ public class User {
                 ", email='" + email + '\'' +
                 '}';
     }
+//-----------------------------------------------------------------------------------
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    //---------------------------------------------
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+    //----------------------------------------------------
 }

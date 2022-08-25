@@ -1,45 +1,77 @@
 package ru.springmavc.crud.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.springmavc.crud.dao.UserDAOInterface;
+import ru.springmavc.crud.dao.UserDAO;
 import ru.springmavc.crud.models.User;
+import ru.springmavc.crud.models.Role;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final UserDAO userDAO;
+    private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    private UserDAOInterface userDAOInterface;
-
-    @Override
-    public List<User> index() {
-        return userDAOInterface.index();
+    public UserServiceImpl(UserDAO userDAO, RoleService roleService, PasswordEncoder passwordEncoder) {
+        this.userDAO = userDAO;
+        this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
+        addDefaultUser();
     }
 
     @Override
-    public User getUserById(int id) {
-        return userDAOInterface.getUserById(id);
+    public User passwordCoder(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return user;
     }
 
     @Override
-    public void saveUser(User user) {
-        userDAOInterface.saveUser(user);
+    public List<User> getAllUsers() {
+        return userDAO.getAllUsers();
     }
 
     @Override
-    public void updateUser(int id, User updatedUser) {
-        userDAOInterface.updateUser(id, updatedUser);
+    public User getUserById(long id) {
+        return userDAO.getUserById(id);
     }
 
     @Override
-    public void deleteUser(int id) {
-        userDAOInterface.deleteUser(id);
+    public void addUser(User user) {
+        userDAO.addUser(passwordCoder(user));
     }
 
     @Override
-    public void test() {
-        System.out.println("Тест");
+    public void removeUser(long id) {
+        userDAO.removeUser(id);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        userDAO.updateUser(passwordCoder(user));
+    }
+
+    @Override
+    public User getUserByLogin(String username) {
+        return userDAO.getUserByLogin(username);
+    }
+
+    @Override
+    public void addDefaultUser() {
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.add(roleService.findById(1L));
+        Set<Role> roleSet2 = new HashSet<>();
+        roleSet2.add(roleService.findById(1L));
+        roleSet2.add(roleService.findById(2L));
+//        User user1 = new User("Garry", "Potter", (byte) 27, "user1@mail.ru", "user1", "12345", roleSet);
+//        User user2 = new User("Steve", "Jobs", (byte) 52, "admin@mail.ru", "admin", "admin", roleSet2);
+//        addUser(user1);
+//        addUser(user2);
     }
 }
