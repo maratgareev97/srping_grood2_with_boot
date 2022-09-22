@@ -29,18 +29,6 @@ public class DatabaseConfig {
     @Resource
     private Environment env;
 
-//    @Bean
-//    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-//        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-//        em.setDataSource(dataSource());
-//        em.setPackagesToScan(env.getRequiredProperty("db.models.package"));
-//
-//        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-//        em.setJpaProperties(getHibernateProperties());
-//
-//        return em;
-//    }
-
     @Bean
     public DataSource dataSource() {
         BasicDataSource ds = new BasicDataSource();
@@ -49,34 +37,16 @@ public class DatabaseConfig {
         ds.setUsername(env.getRequiredProperty("db.username"));
         ds.setPassword(env.getRequiredProperty("db.password"));
 
-        ds.setInitialSize(Integer.valueOf(env.getRequiredProperty("db.initialSize")));
-        ds.setMinIdle(Integer.valueOf(env.getRequiredProperty("db.minIdle")));
-        ds.setMaxIdle(Integer.valueOf(env.getRequiredProperty("db.maxIdle")));
-        ds.setTimeBetweenEvictionRunsMillis(Long.valueOf(env.getRequiredProperty("db.timeBetweenEvictionRunsMillis")));
-        ds.setMinEvictableIdleTimeMillis(Long.valueOf(env.getRequiredProperty("db.minEvictableIdleTimeMillis")));
-        ds.setTestOnBorrow(Boolean.valueOf(env.getRequiredProperty("db.testOnBorrow")));
-        ds.setValidationQuery(env.getRequiredProperty("db.validationQuery"));
+//        ds.setInitialSize(Integer.valueOf(env.getRequiredProperty("db.initialSize")));
+//        ds.setMinIdle(Integer.valueOf(env.getRequiredProperty("db.minIdle")));
+//        ds.setMaxIdle(Integer.valueOf(env.getRequiredProperty("db.maxIdle")));
+//        ds.setTimeBetweenEvictionRunsMillis(Long.valueOf(env.getRequiredProperty("db.timeBetweenEvictionRunsMillis")));
+//        ds.setMinEvictableIdleTimeMillis(Long.valueOf(env.getRequiredProperty("db.minEvictableIdleTimeMillis")));
+//        ds.setTestOnBorrow(Boolean.valueOf(env.getRequiredProperty("db.testOnBorrow")));
+//        ds.setValidationQuery(env.getRequiredProperty("db.validationQuery"));
 
         return ds;
     }
-
-//    @Bean
-//    public PlatformTransactionManager transactionManager() {
-//        JpaTransactionManager manager = new JpaTransactionManager();
-//        manager.setEntityManagerFactory(entityManagerFactory().getObject());
-//        return manager;
-//    }
-
-//    public Properties getHibernateProperties() {
-//        try {
-//            Properties properties = new Properties();
-//            InputStream is = getClass().getClassLoader().getResourceAsStream("/hibernate.properties");
-//            properties.load(is);
-//            return properties;
-//        } catch (IOException e) {
-//            throw new IllegalArgumentException("Не могу считать проперти файл", e);
-//        }
-//    }
 }
 
 

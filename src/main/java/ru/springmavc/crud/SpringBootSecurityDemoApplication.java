@@ -19,4 +19,5 @@ public class SpringBootSecurityDemoApplication {
         return new HiddenHttpMethodFilter();
     }
 
+
 }

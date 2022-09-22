@@ -6,30 +6,30 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
-public class MySpringMvcDispatcherServletIntitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
-    @Override
-    protected Class<?>[] getRootConfigClasses() {
-        return null;
-    }
+public class MySpringMvcDispatcherServletIntitializer  {
+//    @Override
+//    protected Class<?>[] getRootConfigClasses() {
+//        return null;
+//    }
 
-    @Override
-    protected Class<?>[] getServletConfigClasses() {
-        return new Class[] {SpringConfig.class};
-    }
+////    @Override
+//    protected Class<?>[] getServletConfigClasses() {
+//        return new Class[] {SpringConfig.class};
+//    }
 
-    @Override
-    protected String[] getServletMappings() {
-        return new String[]{"/"};
-    }
+//    @Override
+//    protected String[] getServletMappings() {
+//        return new String[]{"/"};
+//    }
 
-    @Override
-    public void onStartup(ServletContext aServletContext) throws ServletException {
-        super.onStartup(aServletContext);
-        registerHiddenFieldFilter(aServletContext);
-    }
+//    @Override
+//    public void onStartup(ServletContext aServletContext) throws ServletException {
+//        super.onStartup(aServletContext);
+//        registerHiddenFieldFilter(aServletContext);
+//    }
 
-    private void registerHiddenFieldFilter(ServletContext aContext) {
-        aContext.addFilter("hiddenHttpMethodFilter",
-                new HiddenHttpMethodFilter()).addMappingForUrlPatterns(null ,true, "/*");
-    }
+//    private void registerHiddenFieldFilter(ServletContext aContext) {
+//        aContext.addFilter("hiddenHttpMethodFilter",
+//                new HiddenHttpMethodFilter()).addMappingForUrlPatterns(null ,true, "/*");
+//    }
 }

@@ -15,40 +15,40 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 @Configuration
 @ComponentScan("ru.springmavc.crud")
 @EnableWebMvc
-public class SpringConfig implements WebMvcConfigurer {
+public class SpringConfig {
 
-    private final ApplicationContext applicationContext;
-
-    @Autowired
-    public SpringConfig(ApplicationContext applicationContext, DatabaseConfig databaseConfig) {
-        this.applicationContext = applicationContext;
-        this.databaseConfig = databaseConfig;
-    }
-
-    @Autowired
-    private final DatabaseConfig databaseConfig;
+//    private final ApplicationContext applicationContext;
+//
+//    @Autowired
+//    public SpringConfig(ApplicationContext applicationContext, DatabaseConfig databaseConfig) {
+//        this.applicationContext = applicationContext;
+//        this.databaseConfig = databaseConfig;
+//    }
+//
+//    @Autowired
+//    private final DatabaseConfig databaseConfig;
 
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
-        templateResolver.setApplicationContext(applicationContext);
+//        templateResolver.setApplicationContext(applicationContext);
         templateResolver.setPrefix("/WEB-INF/views/");
         templateResolver.setSuffix(".html");
         return templateResolver;
     }
 
-    @Bean
-    public SpringTemplateEngine templateEngine() {
-        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-        templateEngine.setTemplateResolver(templateResolver());
-        templateEngine.setEnableSpringELCompiler(true);
-        return templateEngine;
-    }
+//    @Bean
+//    public SpringTemplateEngine templateEngine() {
+//        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+//        templateEngine.setTemplateResolver(templateResolver());
+//        templateEngine.setEnableSpringELCompiler(true);
+//        return templateEngine;
+//    }
 
-    @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
-        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setTemplateEngine(templateEngine());
-        registry.viewResolver(resolver);
-    }
+//    @Override
+//    public void configureViewResolvers(ViewResolverRegistry registry) {
+//        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+//        resolver.setTemplateEngine(templateEngine());
+//        registry.viewResolver(resolver);
+//    }
 }
