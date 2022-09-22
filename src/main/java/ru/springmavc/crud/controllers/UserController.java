@@ -16,13 +16,6 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-
-    @Autowired
-    private UserDAO userDAO;
-
-    @Autowired
-    private UserDAOInterface userDAOInterface;
-
     @Autowired
     private UserServiceImpl userService;
 
@@ -44,30 +37,22 @@ public class UserController {
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("user") @Valid User user,
-                         BindingResult bindingResult) {
-//        if (bindingResult.hasErrors())
-//            return "user/new";
-
+    public String create(@ModelAttribute("user") @Valid User user) {
         userService.saveUser(user);
         return "redirect:/user";
     }
 
     @GetMapping("/edit")
     public String edit(Model model, @RequestParam("id") String id) {
-        System.out.println("edit: " + id);
         model.addAttribute("user", userService.getUserById(Integer.parseInt(id)));
-        System.out.println("Good   " + Integer.parseInt(id));
         return "user/edit";
     }
 
     @PatchMapping("/{id}")
     public String updateUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
-                         @PathVariable("id") int id) {
+                             @PathVariable("id") int id) {
         if (bindingResult.hasErrors())
             return "user/edit";
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
-
         userService.updateUser(id, user);
         return "redirect:/user";
     }

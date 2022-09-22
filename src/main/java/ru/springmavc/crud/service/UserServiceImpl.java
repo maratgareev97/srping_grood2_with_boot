@@ -9,13 +9,11 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-
     @Autowired
     private UserDAOInterface userDAOInterface;
 
     @Override
     public List<User> index() {
-        System.out.println("foxstu       "+userDAOInterface.getUserByLogin("foxstu"));
         return userDAOInterface.index();
     }
 
@@ -39,8 +37,4 @@ public class UserServiceImpl implements UserService {
         userDAOInterface.deleteUser(id);
     }
 
-    @Override
-    public void test() {
-        System.out.println("Тест");
-    }
 }

@@ -5,9 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import ru.springmavc.crud.dao.UserDAO;
-import ru.springmavc.crud.dao.UserDAOInterface;
 import ru.springmavc.crud.models.User;
 import ru.springmavc.crud.service.UserServiceImpl;
 
@@ -16,13 +13,6 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-
-    @Autowired
-    private UserDAO userDAO;
-
-    @Autowired
-    private UserDAOInterface userDAOInterface;
-
     @Autowired
     private UserServiceImpl userService;
 
@@ -46,28 +36,21 @@ public class AdminController {
     @PostMapping()
     public String create(@ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult) {
-//        if (bindingResult.hasErrors())
-//            return "user/new";
-
         userService.saveUser(user);
         return "redirect:/admin";
     }
 
     @GetMapping("/edit")
     public String edit(Model model, @RequestParam("id") String id) {
-        System.out.println("edit: " + id);
         model.addAttribute("user", userService.getUserById(Integer.parseInt(id)));
-        System.out.println("Good   " + Integer.parseInt(id));
         return "admin/edit";
     }
 
     @PatchMapping("/{id}")
     public String updateUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
-                         @PathVariable("id") int id) {
+                             @PathVariable("id") int id) {
         if (bindingResult.hasErrors())
             return "admin/edit";
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
-
         userService.updateUser(id, user);
         return "redirect:/admin";
     }

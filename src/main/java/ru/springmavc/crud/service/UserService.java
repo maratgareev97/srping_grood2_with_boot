@@ -10,6 +10,4 @@ public interface UserService {
     public void saveUser(User user);
     public void updateUser(int id, User updatedUser);
     public void deleteUser(int id);
-
-    public void test();
 }
